@@ -2,8 +2,7 @@
 
 import sys
 import os
-import pandas as pd
-import argparse
+#import argparse #Not necessary until I know what to do with it.
 
 '''
 TODO:
@@ -17,13 +16,13 @@ TODO:
 
 
 
-desc1 = '''
+'''
 NAME
       TBD -- short description
 SYNOPSIS      
 '''
 
-desc2 = '''
+'''
 DESCRIPTION
       CLEAN THIS UP -Purpose of this program: Parse the file from the Chaffron paper that has the information about the sequences analyzed that was later used by Zelezniak et al. The file contains an eventID, the authors study associated with the particular event, the environment sampled and the taxonomic information associated with the particular event. The otuID is listed in the end of the line with the taxonomic assignment. Each event may then have several otu's associated with it. Additionally, each environment can have several events associated with it because it is possible that each environment was sampled by different authors.
 What we need from this file is the EventIDs and their associated OtuIDs.
@@ -32,7 +31,7 @@ Per information from the Zelezniak_2015 paper, I figured out that the data that 
 The way to run the script is by calling the program and putting the input and output filenames as arguments.
 '''
 
-desc3 = '''
+'''
 EXAMPLES
       To do whatever the script does
       > name inputFile outputFile
