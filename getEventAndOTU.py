@@ -1,14 +1,9 @@
 #!/usr/bin/env python
 
-import sys
-import os
-import pandas as  pd
-#import argparse #Not necessary until I know what to do with it.
+from sys import argv
 
 '''
 TODO:
-    Remove that intermediate file
-    Rename the file
     Clean up code
     Insert error dealing
     Try to do everything without needing pandas
@@ -18,9 +13,8 @@ TODO:
 
 
 '''
-NAME
-      TBD -- Extract event and otu IDs from Chaffron (2010) dataset
-SYNOPSIS      
+NAME and SYNOPSIS 
+      getEventAndOTU.py -- Extract event and otu IDs from Chaffron (2010) dataset   
 '''
 
 '''
@@ -54,50 +48,22 @@ AUTHORS
 '''
 
 
-arguments = sys.argv #store the arguments given by the user in the variable arguments
+arguments = argv 
 
-inputFileName = arguments[1] #The first filename given by the user is the input file
-outputFileName = arguments[2] #The second filename given by the used is the final output file
-
-
-f = open(inputFileName,'r') #open original file
-
-new_table = '' #create empty table <- ACTUALLY, I THINK I'M CREATING AN EMPTY STRING, WHICH MAKES NO SENSE DOING. I SHOULD START WITH [ ]. 
-
-for line in f:
-    new_line = line.replace('; otu','\t otu') #put a tab right before the otuID and put this updated line into the newly created table.
-    new_table += new_line
-
-f.close()
-
-##let's export the file as a txt because I only know how to import it as a dataframe in pandas from a file. THERE HAS GOT TO BE A WAY TO NOT HAVE TO GO THROUGH THIS PART AND ANALYZE THE TABLE WITH THE TAB BEFORE THE OTUID DIRECTLY
-
-tempFile = open('file.txt','w')
-
-tempFile.write(new_table)
-tempFile.close()
-
-f = open('file.txt','r')
-
-##this file has the data with several columns per row. In the first column is the event, and in the 7th column is the otuID/
-data = pd.read_table(f,header = None)
-
-
-events = data[[1]]#ok, this is the info for the event, however, to get the otu info, it is more complicated because apparently the column index doesn't end after the OTU column. Even if the OTU is determined at an earlier taxon, the rest of the columns have Nan
-otus = data[[7]]
-
-new_table = pd.concat([otus, events], axis=1)
-new_table.columns = ['RepresentativeOTU','Event']
-new_table.head()
-
-##now lets just export this to a file containing only the otuID and associated event
+inputFileName = arguments[1] 
+outputFileName = arguments[2] 
 
 otu_Event = open(outputFileName,'w')
+f = open(inputFileName,'r') 
 
-new_table.to_csv(otu_Event,sep="\t",index=False)
+new_table = []
+for line in f:
+    new_line = line.replace('; otu','\t otu')
+    new_line = new_line.split('\t') 
+    print>>otu_Event, new_line[1],new_line[7]
     
+f.close() 
 otu_Event.close()
 
-##Now we get the file that is the output of the KEGG annotation. It should have the information of the OTU ID code, and the taxonomic assignment. So, I will break here to learn how to run the KEGG and then come back to this file.
 
 exit(0)
