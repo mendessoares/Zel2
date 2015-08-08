@@ -2,48 +2,57 @@
 
 from sys import argv
 
-
 '''
 TODO:
-    Clean up code
+    Actually write the script
     Insert error dealing
-    Try to do everything without needing pandas
 '''
-
-
-
 
 '''
 NAME and SYNOPSIS 
-      getEventAndOTU.py -- Extract event and otu IDs from Chaffron (2010) dataset   
+      chooseLongerSequence.py -- Choose the longest 16S sequence as a representative for each species/strain.   
 '''
 
 '''
 DESCRIPTION
-      
-      This script expects a gg_sample_details_otus_filtered_file.d.**.tsv file with information from Chaffron et al (2010) A global network of coexisting microbes from
-        environmental and whole-genome sequence data, Genome Research, 20:947-959. Each line has the following information: line number; event number; authors of the paper; 
-        title of the paper; taxonomic information of the associated otu.
-        The otuID is listed in the end of the line with the taxonomic assignment. Each event may then have several otu's associated with it. Additionally, each environment 
-        can have several events associated with it because it is possible that each environment was sampled by different authors.
-
-        To replicate the analysis from the Zelezniak paper, the information we need from this file is the EventIDs and their associated OtuIDs.
-        
-        The program will get the input file, separate the OtuID from the taxonomic assignment, create an intermediate file where the otuID is in a separate column from the 
-        taxonomic ID, then get the table on that file, and extract only the meaningful columns, which will be 1 and 7.
-        
-        Per information from the Zelezniak_2015 paper, I figured out that the data that was used was the one in the file gg_sample_details_otus_filtered_file.d.03.tsv. 
-        The final output file will be otuEventTable.txt
+    The script expects the list of sequences downloaded from the KEGG API. Because each species/strain may have several 16S gene sequences associated with it, the authors
+    of the Zelezniak et al paper decided to choose only the longest one as representative [NOTE: I don't think that was a good idea.]. So this script finds the longest one for
+    each strain/species and moves it to a new file that will then serve to create a local database of 16S sequences of species with complete genome sequences.
 '''
 
 '''
 EXAMPLES
-      To extract only the event and otu id info from the Chaffron dataset
-      > getEventAndOTU.py inputFile outputFile
+      Reduce the data set of representative 16S gene sequences to just one, the longest.
+      > python chooseLongerSequence.py Data/16SSequences.txt Data/longest16SSequences.txt
       
 SEE ALSO
-      other packages that may be useful
+      Uses output from script getSeqsFromKEGGdb.py
 
 AUTHORS
       Helena Mendes-Soares - Mayo Clinic, Center for Individualized Medicine 
+'''
+
+arguments = sys.argv
+
+allSequencesFile = arguments[1]
+longestSequencesFile = arguments[2]
+
+'''
+I'm thinking a dictionary for each species ID. Because then you would have a unique sequence for each strain.
+
+Pseucode (kind of... sort of...):
+
+newDictionary = dict()
+
+for line in allSequences:
+    if line.startswith(>):
+        line.split(:)
+        newDictionaryKey = line[1]
+    
+    else:
+        if len(line) > newDictionary[key]:
+            newDictionary[key] = line
+    
+    print >> longestSequence, key, newDictionary[key]
+            
 '''
