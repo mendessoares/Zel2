@@ -2,51 +2,74 @@
 
 
 import sys
-import os
-import argparse
 import urllib2 as ul
+
 
 '''TODO
     Clean script
-    Change name
+    Change name getSeqsFromKEGGdb.py
     Make output names clearer.
-
-#This script automatically fetches the specific gene sequences that are listed in the clean_matches file from the KEGG api.
-
-#input file should be clean_matches.txt
-#output file should be 16SSequences.txt
-#errors file should be NotFounds.txt
 '''
+
+'''
+NAME and SYNOPSIS 
+      getSeqsFromKEGGdb.py -- Get sequences listed from the KEGG database api
+'''
+
+'''
+DESCRIPTION
+      
+      This script expects a file with a list of the species and gene ID for the 16S sequences of only the species/strains with complete genomes. The format of the entries
+      should be speciesID:geneID. This script used the output file from script find16SofCompleteGenomes.py .
+      
+      It accesses the KEGG API and downloads the sequences listed in the input file in the FASTA format.
+'''
+
+
+'''
+EXAMPLES
+      To get the sequences from the KEGG database
+      > getSeqsFromKEGGdb.py cleanMatchesFile sequencesFile errorsFile
+      #input file should be Data/cleanMatches.txt
+      #output file can be Data/16SSequences.txt
+      #errors file can be Data/NotFounds.txt
+      
+SEE ALSO
+      Uses output from find16SofCompleteGenomes.py script.
+
+AUTHORS
+      Helena Mendes-Soares - Mayo Clinic, Center for Individualized Medicine 
+'''
+
 arguments = sys.argv
 
-inputFile = arguments[1]
-outputFile = arguments[2]
-errorFile = arguments[3]
+cleanMatchesFile = arguments[1]
+sequencesFile = arguments[2]
+errorsFile = arguments[3]
 
-clean_matches = open (inputFile,'r')
-sequencesFile = open (outputFile,'w')
-errors = open (errorFile,'w')
+cleanMatches = open (cleanMatchesFile,'r')
+sequences = open (sequencesFile,'w')
+errors = open (errorsFile,'w')
 
 counter = 0
 
-for i in clean_matches:
+for i in cleanMatches:
     i = i.rstrip('\n') #remove new line otherwise it will be included in the search
     try:
     	siteURL = 'http://rest.kegg.jp/get/{:s}/ntseq'.format(i) #put the code into the url line to be fetched
     	print siteURL
-    	page = ul.urlopen(siteURL) #get the page from that url. I feel like this and the next (sequence) are steps that slow down everything, and may not be really required.
+    	page = ul.urlopen(siteURL) #get the page from that url.
     	sequence = page.read() #and transfer the information in that page to a new variable
-    	print >> sequencesFile, sequence #append the variable sequence to the sequencesFile
-    	counter += 1 
-    #update the counter . I don't think this is needed. Maybe if I print it from inside the loop I will be able to track how far along the download of the sequences is.
-    	print counter
+    	print >> sequences, sequence #append the variable sequence to the sequencesFile
+    	counter += 1 #update the counter . I don't think this is needed. 
+        print counter #just so you know that the program is actually running
     except ul.URLError,e: #some of the pages gave 404 errors so I changed the program so that it would go back to the beginning of the loop if it encountered on of those errors, instead of crashing.
     	print page,e
     	print >> errors, page
     
 
-clean_matches.close()
-sequencesFile.close()
+cleanMatches.close()
+sequences.close()
 errors.close()
     
     
