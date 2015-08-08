@@ -5,11 +5,6 @@ import sys
 import urllib2 as ul
 
 
-'''TODO
-    Clean script
-    Change name getSeqsFromKEGGdb.py
-    Make output names clearer.
-'''
 
 '''
 NAME and SYNOPSIS 
