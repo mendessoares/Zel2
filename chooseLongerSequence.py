@@ -32,10 +32,39 @@ AUTHORS
       Helena Mendes-Soares - Mayo Clinic, Center for Individualized Medicine 
 '''
 
-arguments = sys.argv
+arguments = argv
 
 allSequencesFile = arguments[1]
-longestSequencesFile = arguments[2]
+cleanSequencesFile = arguments[2]
+#longestSequencesFile = arguments[3]
+
+allSequences = open(allSequencesFile, 'r')
+cleanSequences = open(cleanSequencesFile, 'w')
+
+'''
+    FIRST STEP - clean the nucleotide sequences so they don't span several lines. NOT RIGHT YET...
+'''
+sequences = []
+seq = ''
+    
+for line in allSequences:
+    if line.startswith('>'):
+        if seq:
+            sequences.append(seq)
+        seq = line
+            
+    else:
+        seq += line.rstrip()
+            
+if seq:
+    sequences.append(seq)
+    print>>cleanSequences, sequences
+
+
+allSequences.close()
+cleanSequences.close()
+
+
 
 '''
 I'm thinking a dictionary for each species ID. Because then you would forcibly have a unique sequence for each strain.
@@ -44,7 +73,7 @@ Pseucode (kind of... sort of...):
 
 newDictionary = dict()
 
-for line in allSequences:
+for item in sequences:
     if line.startswith(>):
         line.split(:)
         if line[0] not in D:
