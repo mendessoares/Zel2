@@ -10,12 +10,16 @@ TODO:
 
 '''
 NAME and SYNOPSIS 
-      createCommunityObject.py -- create community object with attributes such as species composition, average relatedness and others that will be added as I move along in the analysis.   
+      createCommunityObject.py -- create community object with attributes such as species composition, average relatedness and others that 
+      will be added as I move along in the analysis.   
 '''
 
 '''
 DESCRIPTION
     The script expects 
+    
+    I think it will be useful to actually have an object with several characteristics of the community that will be used for the analysis along 
+    the way but also updated with each step. This will make it easier to jsut have everything concerning each community summarized in only one entry for instance.
 '''
 
 '''
