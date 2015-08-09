@@ -38,7 +38,7 @@ allSequencesFile = arguments[1]
 longestSequencesFile = arguments[2]
 
 '''
-I'm thinking a dictionary for each species ID. Because then you would have a unique sequence for each strain.
+I'm thinking a dictionary for each species ID. Because then you would forcibly have a unique sequence for each strain.
 
 Pseucode (kind of... sort of...):
 
@@ -47,12 +47,20 @@ newDictionary = dict()
 for line in allSequences:
     if line.startswith(>):
         line.split(:)
-        newDictionaryKey = line[1]
-    
+        if line[0] not in D:
+            newDictionary[line[0]] = None
+        else:
+            continue
+            
+            
     else:
         if len(line) > newDictionary[key]:
             newDictionary[key] = line
     
     print >> longestSequence, key, newDictionary[key]
+    
+    
+Somewhere in this script I also want to translate the speciesID code to the actual species/strain name which means I probably need to go into the KEGG db again. Actually no, I just 
+need to go to the file with the completeGenomeProkaryotesList.txt in the Data folder
             
 '''
