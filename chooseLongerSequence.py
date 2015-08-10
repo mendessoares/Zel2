@@ -42,7 +42,7 @@ allSequences = open(allSequencesFile, 'r')
 cleanSequences = open(cleanSequencesFile, 'w')
 
 '''
-    FIRST STEP - clean the nucleotide sequences so they don't span several lines. NOT RIGHT YET...
+    FIRST STEP - clean the nucleotide sequences so they don't span several lines. NOT RIGHT YET... This needs to be a script by itself. I feel I will use it for other things.
 '''
 sequences = []
 seq = ''
