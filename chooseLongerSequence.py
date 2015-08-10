@@ -1,11 +1,11 @@
 #!/usr/bin/env python
 
 from sys import argv
+from csv import writer
 
 '''
 TODO:
-    Actually write the script
-    Insert error dealing
+    Ok, it's already creating a dictionary with the keys. I still need to figure out how to find the longest sequence and add it to its respective key.
 '''
 
 '''
@@ -26,7 +26,7 @@ EXAMPLES
       > python chooseLongerSequence.py Data/16SSequences.txt Data/longest16SSequences.txt
       
 SEE ALSO
-      Uses output from script getSeqsFromKEGGdb.py
+      Uses output from script removeEndLineinFASTAFiles.py
 
 AUTHORS
       Helena Mendes-Soares - Mayo Clinic, Center for Individualized Medicine 
@@ -34,36 +34,41 @@ AUTHORS
 
 arguments = argv
 
-allSequencesFile = arguments[1]
-cleanSequencesFile = arguments[2]
-#longestSequencesFile = arguments[3]
+trimmedSequencesFile = arguments[1]
+longestSequencesFile = arguments[2]
 
-allSequences = open(allSequencesFile, 'r')
-cleanSequences = open(cleanSequencesFile, 'w')
+trimmedSequences = open(trimmedSequencesFile, 'r')
+longestSequences = open(longestSequencesFile, 'w')
 
-'''
-    FIRST STEP - clean the nucleotide sequences so they don't span several lines. NOT RIGHT YET... This needs to be a script by itself. I feel I will use it for other things.
-'''
-sequences = []
-seq = ''
-    
-for line in allSequences:
+
+newDictionary = dict()
+newKey = ''
+for line in trimmedSequences:
     if line.startswith('>'):
-        if seq:
-            sequences.append(seq)
-        seq = line
+        line = line.split(":" )
+        #print>>longestSequences, line[0]
+        if line[0] not in newDictionary.keys():
+            newKey = line[0]
+            newDictionary.update({newKey:None})
             
+        else:
+            continue
+        
     else:
-        seq += line.rstrip()
-            
-if seq:
-    sequences.append(seq)
-    print>>cleanSequences, sequences
+        if len(line) > len(newDictionary[newKey]):
+            newDictionary[newKey] = line
+    
+    
+    
 
+writerDict = writer(longestSequences)
 
-allSequences.close()
-cleanSequences.close()
+for key, value in newDictionary.items():
+    writerDict.writerow([key,value])
+    
 
+trimmedSequences.close()
+longestSequences.close() 
 
 
 '''
