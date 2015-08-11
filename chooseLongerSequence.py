@@ -2,6 +2,7 @@
 
 from sys import argv
 from csv import writer
+from Finder.Finder_items import item
 
 '''
 TODO:
@@ -43,23 +44,43 @@ longestSequences = open(longestSequencesFile, 'w')
 
 newDictionary = dict()
 newKey = ''
+newValue = None
+
 for line in trimmedSequences:
     if line.startswith('>'):
         line = line.split(":" )
         #print>>longestSequences, line[0]
         if line[0] not in newDictionary.keys():
             newKey = line[0]
-            newDictionary.update({newKey:None})
+            newDictionary.update({newKey:newValue})
             
         else:
             continue
         
-    else:
-        if len(line) > len(newDictionary[newKey]):
-            newDictionary[newKey] = line
+    #else:
+        #if len(line) > len(newDictionary[newKey]):
+            #newDictionary[newKey] = line
     
     
-    
+
+'''
+MAYBE... I can start the dictionary to create the keys, then go over each line that has those keys in the above line and find the longest sequence.
+'''
+        
+longest = None
+'''
+for line in trimmedSequences:
+    for key in newDictionary:
+        if line == key:
+            sequence = line[i+1]
+            if len(sequence)>len(longest)
+            longest = sequence
+            newDictionary[key] = longest
+            
+
+
+
+'''
 
 writerDict = writer(longestSequences)
 
