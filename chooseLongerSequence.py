@@ -2,7 +2,7 @@
 
 from sys import argv
 from csv import writer
-from Finder.Finder_items import item
+
 
 '''
 TODO:
@@ -24,7 +24,7 @@ DESCRIPTION
 '''
 EXAMPLES
       Reduce the data set of representative 16S gene sequences to just one, the longest.
-      > python chooseLongerSequence.py Data/16SSequences.txt Data/longest16SSequences.txt
+      > python chooseLongerSequence.py Data/trimmed16Ssequences.txt Data/longest16Ssequences.txt
       
 SEE ALSO
       Uses output from script removeEndLineinFASTAFiles.py
@@ -43,79 +43,54 @@ longestSequences = open(longestSequencesFile, 'w')
 
 
 newDictionary = dict()
-newKey = ''
-newValue = None
+
+
+
+fixedSequences = []
+codes = []
 
 for line in trimmedSequences:
     if line.startswith('>'):
-        line = line.split(":" )
-        #print>>longestSequences, line[0]
-        if line[0] not in newDictionary.keys():
-            newKey = line[0]
-            newDictionary.update({newKey:newValue})
-            
-        else:
-            continue
+        line = line.split(":")
+        fixedSequences.append(line[0])
+        codes.append(line[0])
+    else:
+        fixedSequences.append(line)
+
+codes = list(set(codes))    
+
+print codes
+longest = []
+
+
+for linha in range(0,len(fixedSequences)):
+    for i in codes:
+        if i in fixedSequences[linha]:
+            sequence = fixedSequences[linha+1]
         
-    #else:
-        #if len(line) > len(newDictionary[newKey]):
-            #newDictionary[newKey] = line
-    
-    
-
-'''
-MAYBE... I can start the dictionary to create the keys, then go over each line that has those keys in the above line and find the longest sequence.
-'''
-        
-longest = None
-'''
-for line in trimmedSequences:
-    for key in newDictionary:
-        if line == key:
-            sequence = line[i+1]
-            if len(sequence)>len(longest)
-            longest = sequence
-            newDictionary[key] = longest
+            if len(sequence) > len(longest):
+                longest = sequence
+                longest = longest.strip()
             
+            newDictionary.update({i:longest})
+            
+print newDictionary            
+        
 
 
 
-'''
-
-writerDict = writer(longestSequences)
+        
+writerDict = writer(longestSequences,delimiter='\n')
 
 for key, value in newDictionary.items():
     writerDict.writerow([key,value])
-    
 
 trimmedSequences.close()
 longestSequences.close() 
 
+exit(0)
+
 
 '''
-I'm thinking a dictionary for each species ID. Because then you would forcibly have a unique sequence for each strain.
-
-Pseucode (kind of... sort of...):
-
-newDictionary = dict()
-
-for item in sequences:
-    if line.startswith(>):
-        line.split(:)
-        if line[0] not in D:
-            newDictionary[line[0]] = None
-        else:
-            continue
-            
-            
-    else:
-        if len(line) > newDictionary[key]:
-            newDictionary[key] = line
-    
-    print >> longestSequence, key, newDictionary[key]
-    
-    
-Somewhere in this script I also want to translate the speciesID code to the actual species/strain name which means I probably need to go into the KEGG db again. Actually no, I just 
-need to go to the file with the completeGenomeProkaryotesList.txt in the Data folder
-            
+SUCCESS!!!
 '''
